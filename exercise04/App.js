@@ -8,16 +8,25 @@ import GlobalStyle from './components/GlobalStyle';
 // Import routes
 import Pages from './pages';
 
-// configure our API URI & cache
+// Configure our API URI & cache
 const uri = process.env.API_URI;
 const cache = new InMemoryCache();
 
-// create the Apollo client
+// Create the Apollo client
 const client = new ApolloClient({
-    uri,
+    link: authLink.concat(httpLink),
     cache,
+    resolvers: {},
     connectToDevTools: true
   });
+
+// Check for a local token
+const data = {
+    isLoggedIn: !!localStorage.getItem('token')
+};
+
+// write the cache data on initial load
+cache.writeData({ data });
 
 // Return the content of the application
 const App = () => (
