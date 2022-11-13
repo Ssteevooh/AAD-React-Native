@@ -1,5 +1,5 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
+import ReactDOM from 'react-dom/client';
 import { ApolloClient, ApolloProvider, InMemoryCache } from '@apollo/client';
 
 // Import global styles
@@ -20,14 +20,13 @@ const client = new ApolloClient({
   });
 
 // Return the content of the application
-const App = () => {
-    return (
-        <ApolloProvider client={client}>
-            <GlobalStyle />
-            <Pages />
-        </ApolloProvider>
-    );
-};
+const App = () => (
+    <ApolloProvider client={client}>
+        <GlobalStyle />
+        <Pages />
+    </ApolloProvider>
+);
 
 // Render application within the element with an ID of root
-ReactDOM.render(<App />, document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<App />)
