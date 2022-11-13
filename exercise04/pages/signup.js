@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Button from '../components/Button';
@@ -23,37 +23,54 @@ const Form = styled.form`
 
 // include the props passed to the component for later use
 const SignUp = props => {
+    // set the default state of the form
+    const [values, setValues] = useState();
+
+    // update the state when a user types in the form
+    const onChange = event => {
+        setValues({
+            ...values,
+            [event.target.name]: event.target.value
+        });
+    };
+   
     useEffect(() => {
         // update the document title
         document.title = 'Sign Up — Notedly';
     });
+
     return (
         <Wrapper>
             <h2>Sign Up</h2>
-            <Form>
+            <Form
+                onSubmit={event => {
+                    event.preventDefault();
+                    console.log(values);
+                }}
+                >
                 <label htmlFor="username">Username:</label>
                 <input
                     required
                     type="text"
-                    id="username"
                     name="username"
                     placeholder="username"
+                    onChange={onChange}
                 />
                 <label htmlFor="email">Email:</label>
                 <input
                     required
                     type="email"
-                    id="email"
                     name="email"
                     placeholder="Email"
+                    onChange={onChange}
                 />
                 <label htmlFor="password">Password:</label>
                 <input
                     required
                     type="password"
-                    id="password"
                     name="password"
                     placeholder="Password"
+                    onChange={onChange}
                 />
                 <Button type="submit">Submit</Button>
             </Form>
