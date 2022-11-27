@@ -15,7 +15,6 @@ const noteSchema = new mongoose.Schema(
     },
     disabled: {
       type: Boolean,
-      required: true
     },
     favoriteCount: {
       type: Number,

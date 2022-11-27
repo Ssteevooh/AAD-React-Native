@@ -21,7 +21,8 @@ module.exports = {
       content: args.content,
       // reference the author's mongo id
       author: mongoose.Types.ObjectId(user.id),
-      disabled: false
+      favoriteCount: 0,
+      disabled: args.disabled
     });
   },
   deleteNote: async (parent, { id }, { models, user }) => {
