@@ -7,7 +7,7 @@ const Feed = props => {
             <Text>Feed</Text>
             <Button
                 title='Keep reading'
-                onPress={() => props.navigation.navigate('NoteS')}
+                onPress={() => props.navigation.navigate('Note')}
             />
         </View>
     );
