@@ -40,25 +40,28 @@ const getUser = token => {
 
 // Apollo Server setup
 // updated to include `validationRules`
-const server = new ApolloServer({
-  typeDefs,
-  resolvers,
-  validationRules: [depthLimit(5), createComplexityLimitRule(1000)],
-  context: ({ req }) => {
-    // get the user token from the headers
-    const token = req.headers.authorization;
-    // try to retrieve a user with the token
-    const user = getUser(token);
-    // add the db models and the user to the context
-    return { models, user };
-  }
+async function startServer(app) {
+  const server = new ApolloServer({
+    typeDefs,
+    resolvers,
+    validationRules: [depthLimit(5), createComplexityLimitRule(1000)],
+    context: ({ req }) => {
+      // get the user token from the headers
+      const token = req.headers.authorization;
+      // try to retreive a user with the token
+      const user = getUser(token);
+      // add the db models and the user to the context
+      return { models, user };
+    }
+  });
+
+  // apply the Apollo GraphQL middleware and set the path to /api
+  await server.start();
+  server.applyMiddleware({ app, path: '/api' });
+  return server.graphqlPath;
+};
+
+app.listen(port, async () => {
+  const path = await startServer(app);
+  console.log(`Graphql Server running at http://localhost:${port}${path}`)
 });
-
-// Apply the Apollo GraphQL middleware and set the path to /api
-server.applyMiddleware({ app, path: '/api' });
-
-app.listen({ port }, () =>
-  console.log(
-    `GraphQL Server running at http://localhost:${port}${server.graphqlPath}`
-  )
-);

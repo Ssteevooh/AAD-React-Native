@@ -1,19 +1,15 @@
-// Require the mongose library
 const mongoose = require('mongoose');
+
+/*
+useNewUrlParser, useUnifiedTopology, useFindAndModify, and useCreateIndex
+are no longer supported options. Mongoose 6 always behaves as
+if useNewUrlParser, useUnifiedTopology, and useCreateIndex are true, and
+useFindAndModify is false. Please remove these options from your code.
+*/
 
 module.exports = {
   connect: DB_HOST => {
-    // Use the Mongo driver's updated URL string parser
-    mongoose.set('useNewUrlParser', true);
-    // Use `findOneAndUpdate()` in place of findAndModify()
-    mongoose.set('useFindAndModify', false);
-    // Use `createIndex()` in place of `ensureIndex()`
-    mongoose.set('useCreateIndex', true);
-    // Use the new server discovery & monitoring engine
-    mongoose.set('useUnifiedTopology', true);
-    // Connect to the DB
     mongoose.connect(DB_HOST);
-    // Log an error if we fail to connect
     mongoose.connection.on('error', err => {
       console.error(err);
       console.log(
@@ -21,6 +17,7 @@ module.exports = {
       );
       process.exit();
     });
+    console.log('Database connected');
   },
 
   close: () => {
