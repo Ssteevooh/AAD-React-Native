@@ -21,7 +21,7 @@ const app = express();
 db.connect(DB_HOST);
 
 // Security middleware
-app.use(helmet());
+// app.use(helmet());
 // CORS middleware
 app.use(cors());
 
@@ -33,7 +33,7 @@ const getUser = token => {
       return jwt.verify(token, process.env.JWT_SECRET);
     } catch (err) {
       // if there's a problem with the token, throw an error
-      throw new Error('Session invalid');
+      // throw new Error('Session invalid');
     }
   }
 };
