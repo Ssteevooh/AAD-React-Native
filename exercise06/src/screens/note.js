@@ -2,7 +2,8 @@ import React from "react";
 import { Text, View, StyleSheet } from "react-native";
 import { useQuery, gql} from '@apollo/client';
 
-import Note from "../components/Note";
+import Note from '../components/Note';
+import Loading from '../components/Loading';
 
 const GET_NOTE = gql`
     query note($id: ID!) {
@@ -23,7 +24,7 @@ const GET_NOTE = gql`
 const NoteScreen = ({ route }) => {
     const { id } = route.params;
     const { loading, error, data } = useQuery(GET_NOTE, { variables: { id } });
-    if (loading) return <Text>Loading</Text>;
+    if (loading) return <Loading />;
     // if there's an error, display this message to the user
     if (error) return <Text>{JSON.stringify(error)}</Text>;
     // if successful, pass the data to the note component
