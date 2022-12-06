@@ -12,6 +12,7 @@ const { API_URI } = getEnvVars();
 const uri = API_URI;
 const httpLink = createHttpLink({ uri: uri });
 
+// return the headers to the context
 const authLink = setContext(async (_, { headers }) => {
     return {
         headers: {
