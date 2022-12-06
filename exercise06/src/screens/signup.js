@@ -7,15 +7,15 @@ import { useNavigation } from '@react-navigation/native';
 import UserForm from '../components/UserForm';
 import Loading from '../components/Loading';
 
-const SIGNIN_USER = gql`
+const SIGNUP_USER = gql`
     mutation ($username: String!, $email: String!, $password: String!) {
-        signIn(username: $username, email: $email, password: $password)
+        signUp(username: $username, email: $email, password: $password)
     }
 `;
 
-const SignIn = () => {
+const SignUp = () => {
     const navigation = useNavigation();
-    const [signIn, { loading, error }] = useMutation(SIGNIN_USER, {
+    const [signUp, { loading, error }] = useMutation(SIGNUP_USER, {
         onCompleted: data => {
             SecureStore.setItemAsync('token', data.signIn).then(
                 navigation.navigate('AuthenticatedScreens')
@@ -29,9 +29,9 @@ const SignIn = () => {
 
     return (
         <React.Fragment>
-            <UserForm action={signIn} fromType="signIn"/>
+            <UserForm action={signUp} fromType="signUp"/>
         </React.Fragment>
     );
 };
 
-export default SignIn;
+export default SignUp;

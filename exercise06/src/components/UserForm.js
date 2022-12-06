@@ -1,17 +1,33 @@
 import React, { useState } from "react";
-import { View, Text, TextInput, Button, TouchableOpacity, StyleSheet} from 'react-native';
+import { View, Text, TextInput, TouchableOpacity, StyleSheet} from 'react-native';
+import { useNavigation} from '@react-navigation/native';
 
 const UserForm = props => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
+    const [username, setUsername] = useState();
+
+    const navigation = useNavigation();
 
 const handleSubmit = () => {
     // this function is called when the user presses the form button
+    props.action({
+        variables: {
+            email: email,
+            password: password,
+            username: username
+        }
+    });
 };
-       
-
     return (
         <View style={styles.formview}>
+            <Text style={styles.formlabel}>Username</Text>
+                <TextInput style={styles.styledinput}
+                    onChangeText={text => setUsername(text)}
+                    value={username} 
+                    textContentType="username"
+                    autoCapitalize="none"
+                />
             <Text style={styles.formlabel}>Email</Text>
                 <TextInput style={styles.styledinput}
                     onChangeText={text => setEmail(text)}
@@ -20,16 +36,24 @@ const handleSubmit = () => {
                     autoComplete="email"
                     autoFocus={true}
                     autoCapitalize="none"
-                    />
-            <Text style={styles.formlabel}>Password</Text>
+                />
+                <Text style={styles.formlabel}>Password</Text>
                 <TextInput style={styles.styledinput}
                     onChangeText={text => setPassword(text)}
                     value={password} 
                     textContentType="password"
                     secureTextEntry={true}
                     />
-            <Button style={styles.formbutton} onPress={handleSubmit}/>
-                <Text style={styles.buttontext}>Submit</Text>
+                    <TouchableOpacity onPress={handleSubmit}>
+                        <Text>Submit</Text>
+                    </TouchableOpacity>
+                    {props.formType !== 'signUp' && (
+                        <TouchableOpacity onPress={() => navigation.navigate('SignUp')}>
+                            <Text>
+                                Need an account? <Text>Sign up.</Text>
+                            </Text>
+                        </TouchableOpacity>
+                    )}
         </View>
     );
 };

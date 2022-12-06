@@ -7,21 +7,23 @@ import Feed from './feed';
 import Favorites from './favorites';
 import MyNotes from './mynotes'
 import NoteScreen from './note'
-import AuthLoading from './authloading';
+
 import SignIn from './signin';
+import SignUp from './signup';
 import Settings from './settings';
+import AuthLoadingScreen from './authloading'
 
 const Tab = createBottomTabNavigator();
 const FeedStack = createStackNavigator();
-const AuthStack = createStackNavigator();
+const AuthenticationStack = createStackNavigator();
 const SettingsStack = createStackNavigator();
 const AllStack = createStackNavigator();
 
 const FeedStackScreen = () => {
     return (
         <FeedStack.Navigator>
-            <FeedStack.Screen name="FeedS" component={Feed} options={{title: 'Feed'}} />
-            <FeedStack.Screen name="NoteS" component={NoteScreen} options={{title: 'Note'}} />
+            <FeedStack.Screen name="FeedS" component={Feed} options={{ headerShown: false }} />
+            <FeedStack.Screen name="NoteS" component={NoteScreen} />
         </FeedStack.Navigator>
     );
 };
@@ -29,56 +31,79 @@ const FeedStackScreen = () => {
 const SettingsStackScreen = () => {
     return (
         <SettingsStack.Navigator>
-            <SettingsStack.Screen name='SettingsS' component={Settings} options={{title: 'Settings'}} />
+            <SettingsStack.Screen name='Settings' component={Settings} />
         </SettingsStack.Navigator>
     );
 };
 
-export default function Screens() {
+function UnAuthenticatedScreens() {
+    return (
+        <AuthenticationStack.Navigator initialRouteName='SignIn'>
+            <AuthenticationStack.Screen name='SignIn' component={SignIn}
+            options={{ title: 'Sign In' }}/>
+            <AuthenticationStack.Screen name='SignUp' component={SignUp}
+            options={{ title: 'Sign Up' }}/>
+        </AuthenticationStack.Navigator>
+    )
+};
+
+function AuthenticatedScreens() {
     return (
         <Tab.Navigator initialRouteName='Feed'>
-            <Tab.Screen 
-                name="Favorites"
-                component={Favorites}
-                options={{
-                    title: 'Favorites',
-                    tabBarIcon: ({}) => (
-                        <AntDesign name="staro" size={24} color="black" />
-                    ),
-                }} 
-            />
-            <Tab.Screen
-                name="Feed"
-                component={FeedStackScreen}
-                options={{
-                    title: 'Feed',
-                    headerShown: false,
-                    tabBarIcon: ({}) => (
-                        <AntDesign name="home" size={24} color="black" />
-                    ),
-                }} 
-            />
-            <Tab.Screen
-                name="My Notes"
-                component={MyNotes}
-                options={{
-                    title: 'My Notes',
-                    tabBarIcon: ({}) => (
-                    <AntDesign name="book" size={24} color="black" />
-                    ),
-                }} 
+            <Tab.Screen  
+            name="Feed" 
+            component={FeedStackScreen} 
+            options={{
+                title: 'Feed',
+                tabBarIcon: ({}) => (
+                <AntDesign name="home" size={24} color="black" />
+                ),
+            }} 
             />
             <Tab.Screen 
-                name='Settings'
-                component={SettingsStackScreen}
-                options={{
-                    title: 'Settings',
-                    headerShown: false,
-                    tabBarIcon: ({}) => (
-                        <AntDesign name="setting" size={24} color="black" />
-                    ),
-                }}
-                />
+            name="Favorites"
+            component={Favorites}
+            options={{
+                title: 'My Favorites',
+                tabBarIcon: ({}) => (
+                <AntDesign name="staro" size={24} color="black" />
+                ),
+            }}
+            />
+            <Tab.Screen 
+            name="My Notes"
+            component={MyNotes}
+            options={{
+                title: 'My Notes',
+                tabBarIcon: ({}) => (
+                <AntDesign name="book" size={24} color="black" />
+                ),
+            }}
+            />
+            <Tab.Screen 
+            name='SettingsS'
+            component={SettingsStackScreen}
+            options={{
+                title: 'Settings',
+                headerShown: false,
+                tabBarIcon: ({}) => (
+                    <AntDesign name="setting" size={24} color="black" />
+                ),
+            }}
+            />
         </Tab.Navigator>
-    );
+    )
+}
+
+export default function AllScreens() {
+    return (
+        <AllStack.Navigator initialRouteName='AuthLoadingScreen'>
+            <AllStack.Screen name='AuthLoadingScreen' component={AuthLoadingScreen}
+            options={{ title: 'AuthLoadingScreen', headerShown: false }}/>
+            <AllStack.Screen name='AuthenticatedScreens' component={AuthenticatedScreens}
+            options={{ title: 'AuthenticatedScreens', headerShown: false }}/>
+            <AllStack.Screen name='UnAuthenticatedScreens' component={UnAuthenticatedScreens}
+            options={{ title: 'UnAuthenticatedScreens', headerShown: false }}/>
+        </AllStack.Navigator>
+    )
 };

@@ -1,9 +1,11 @@
 import React from 'react';
 import { FlatList, View, StyleSheet, TouchableOpacity } from 'react-native';
+import { useNavigation} from '@react-navigation/native';
 
 import Note from './Note';
 
 const NoteFeed = props => {
+    const navigation = useNavigation();
     return (
         <View>
             <FlatList
@@ -12,7 +14,7 @@ const NoteFeed = props => {
                 ItemSeparatorComponent={() => <View style={styles.separator}/>}
                 renderItem={({ item }) => (
                     <TouchableOpacity
-                        onPress={() => props.navigation.navigate('NoteS', {
+                        onPress={() => navigation.navigate('NoteS', {
                             id: item.id
                         })
                     }

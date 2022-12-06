@@ -1,16 +1,28 @@
 import 'react-native-gesture-handler';
 import { NavigationContainer } from '@react-navigation/native';
-import { ApolloClient, InMemoryCache, ApolloProvider} from '@apollo/client';
+import { ApolloClient, InMemoryCache, ApolloProvider, createHttpLink } from '@apollo/client';
+import { setContext } from 'apollo-link-context';
+import * as SecureStore from 'expo-secure-store';
 
 import getEnvVars from './config';
 
 import Screens from './src/screens/index';
-
 const { API_URI } = getEnvVars();
+
 const uri = API_URI;
+const httpLink = createHttpLink({ uri: uri });
+
+const authLink = setContext(async (_, { headers }) => {
+    return {
+        headers: {
+            ...headers,
+            authorization: (await SecureStore.getItemAsync('token')) || ''
+        }
+    };
+});
 
 const client = new ApolloClient({
-    uri: uri,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache()
 });
 

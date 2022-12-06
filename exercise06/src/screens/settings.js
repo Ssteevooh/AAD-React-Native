@@ -1,11 +1,13 @@
 import React from 'react';
 import { View, Button } from 'react-native';
 import * as SecureStore from 'expo-secure-store';
+import { useNavigation } from '@react-navigation/native';
 
-const Settings = props => {
-    const signOut = () => {
+const Settings = () => {
+    const navigation = useNavigation();
+    const signOut = async () => {
         SecureStore.deleteItemAsync('token').then(
-            props.navigation.navigate('Auth')
+            navigation.navigate('UnAuthenticatedScreens')
             );
         };
     return (

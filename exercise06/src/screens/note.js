@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { Text } from "react-native";
 import { useQuery, gql} from '@apollo/client';
 
 import Note from '../components/Note';
@@ -32,9 +32,3 @@ const NoteScreen = ({ route }) => {
    };
 
 export default NoteScreen;
-
-const styles = StyleSheet.create({
-    container: {
-        padding: 10
-    },
-});
