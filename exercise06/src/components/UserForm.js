@@ -10,7 +10,7 @@ const UserForm = props => {
     const navigation = useNavigation();
 
 const handleSubmit = () => {
-    // this function is called when the user presses the form button
+    // this will enable to pass the user-entered data to the mutation
     props.action({
         variables: {
             email: email,
